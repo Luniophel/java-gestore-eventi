@@ -98,6 +98,16 @@ public class Evento {
 		
 	}
 	
+	//Si ripete num volte
+	public void prenota(int num) throws Exception
+	{
+		for (int i=0; i<num; i++)
+		{
+			this.prenota();
+		}
+		
+	}
+	
 	public void disdici() throws Exception
 	{
 		try
@@ -115,6 +125,22 @@ public class Evento {
 			this.nPostiPrenotati--;
 	}
 	
+	//Si ripete num volte
+	public void disdici(int num) throws Exception
+	{
+		for (int i=0; i<num; i++)
+		{
+			this.disdici();
+		}
+	}
+	
+	public int postiDisponibili() 
+	{
+		return nPostiTotali - nPostiPrenotati;
+	}
+	
+	
+	//Stampa data, ora e titolo dell'evento
 	@Override
 	public String toString()
 	{
