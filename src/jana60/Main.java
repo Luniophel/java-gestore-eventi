@@ -15,6 +15,12 @@ public class Main {
 		String input;
 		
 		Evento evento = null; //Oggetto inizializzato come valore null, per salvarne i dati dopo il try
+		Conferenza conferenza = null;
+		
+		//Valori che mi dicono quale print fare alla fine, per testing
+		boolean isEvento = false;
+		boolean isConferenza = false;
+
 		
 		do {
 			try
@@ -53,10 +59,57 @@ public class Main {
 				input = scan.nextLine();
 				int tempnPosti = Integer.parseInt(input);
 				
-				//Cotruzione oggetto con i dati provvisori inseriti dall'utente
-				evento = new Evento(tempTitolo, tempData, tempnPosti);
+				do
+				{
+					System.out.println("Si tratta di una conferenza?");
+					System.out.println("1 - SI; 2 - NO;");
+					input = scan.nextLine();
 				
-				System.out.println("\nEvento " + evento.getTitolo() + " creato con successo.");
+					switch (input) 
+					{
+						case "1":
+							
+							System.out.println("Inserisci l'argomento della conferenza: ");
+							String tempArgomento = scan.nextLine();
+							
+							System.out.println("Dati oratore");
+							System.out.print("Nome: ");
+							String tempNome = scan.nextLine();
+							System.out.print("Cognome: ");
+							String tempCognome = scan.nextLine();
+							System.out.print("Titolo: ");
+							String tempTitoloOratore = scan.nextLine();
+
+							Oratore tempOratore = new Oratore(tempNome, tempCognome, tempTitoloOratore);
+							//Cotruzione oggetto con i dati provvisori inseriti dall'utente
+							conferenza = new Conferenza(tempTitolo, tempData, tempnPosti, tempArgomento, tempOratore);
+							isConferenza = true;
+							continua = true;
+							break;
+						
+						case "2":
+							//Cotruzione oggetto con i dati provvisori inseriti dall'utente
+							//In questo caso, non si tratta di una conferenza
+							evento = new Evento(tempTitolo, tempData, tempnPosti);
+							isEvento = true;
+							continua = true;
+							break;
+						
+						default:
+							System.out.println("Valore non valido, riprova.");
+							continua = false;
+							break;
+					
+					}
+					
+				}
+				while (!continua);
+				
+				if (isEvento)
+					System.out.println("\nEvento " + evento.getTitolo() + " creato con successo.");
+				if (isConferenza)
+					System.out.println("\nConferenza " + conferenza.getTitolo() + " creata con successo.");
+
 			}
 			catch (NumberFormatException nfe)
 			{
@@ -72,67 +125,142 @@ public class Main {
 			
 		} while (!continua);
 		
-		do {
-			
-			System.out.println("Prenotazioni attuali: " + evento.getnPostiPrenotati());
-			System.out.println("Ci sono ancora " + evento.postiDisponibili() + " posti disponibili.");
-			System.out.println("Cosa vuoi fare?");
-			System.out.println("1 - Prenota; 2 - Disdici; 3 - Chiudi;");
-			input = scan.nextLine();
-			
-			switch (input) {
-			case "1": 
-				try 
-				{
-					System.out.println("Quanti posti vuole prenotare?");
-					int numPrenota = Integer.parseInt(scan.nextLine());
-					evento.prenota(numPrenota);
-					continua = false;
-					break;
-				} 
-				catch (NumberFormatException nfe)
-				{
-					System.out.println("Valore non valido. Devi inserire un numero.");
-					continua = false;
-				}
-				catch (Exception e)
-				{
-					System.out.println("ERRORE: Qualcosa è andato storto..");
-					System.out.println(e.getMessage());
-					continua = false;
-				}
+		if (isEvento)
+		{
+			do {
 				
-			case "2": 
-				try 
-				{
-					System.out.println("Quanti posti vuole disdire?");
-					int numDisdici = Integer.parseInt(scan.nextLine());
-					evento.disdici(numDisdici);
-					continua = false;
-					break;
-				} 
-				catch (NumberFormatException nfe)
-				{
-					System.out.println("Valore non valido. Devi inserire un numero.");
-					continua = false;
-				}
-				catch (Exception e)
-				{
-					System.out.println("ERRORE: Qualcosa è andato storto..");
-					System.out.println(e.getMessage());
-					continua = false;
-				}
+				System.out.println("Prenotazioni attuali: " + evento.getnPostiPrenotati());
+				System.out.println("Ci sono ancora " + evento.postiDisponibili() + " posti disponibili.");
+				System.out.println("Cosa vuoi fare?");
+				System.out.println("1 - Prenota; 2 - Disdici; 3 - Chiudi;");
+				input = scan.nextLine();
+				
+				switch (input) {
+				case "1": 
+					try 
+					{
+						System.out.println("Quanti posti vuole prenotare?");
+						int numPrenota = Integer.parseInt(scan.nextLine());
+						evento.prenota(numPrenota);
+						continua = false;
+						break;
+					} 
+					catch (NumberFormatException nfe)
+					{
+						System.out.println("Valore non valido. Devi inserire un numero.");
+						continua = false;
+					}
+					catch (Exception e)
+					{
+						System.out.println("ERRORE: Qualcosa è andato storto..");
+						System.out.println(e.getMessage());
+						continua = false;
+					}
+					
+				case "2": 
+					try 
+					{
+						System.out.println("Quanti posti vuole disdire?");
+						int numDisdici = Integer.parseInt(scan.nextLine());
+						evento.disdici(numDisdici);
+						continua = false;
+						break;
+					} 
+					catch (NumberFormatException nfe)
+					{
+						System.out.println("Valore non valido. Devi inserire un numero.");
+						continua = false;
+					}
+					catch (Exception e)
+					{
+						System.out.println("ERRORE: Qualcosa è andato storto..");
+						System.out.println(e.getMessage());
+						continua = false;
+					}
 
-			case "3":
-				continua = true;
-				break;
+				case "3":
+					continua = true;
+					break;
+					
+				default:
+					System.out.println("Valore non valido, riprova.");
+					continua = false;
+					break;
+				}
+			} while (!continua);
+		}
+		
+		if (isConferenza)
+		{
+			do {
 				
-			default:
-				System.out.println("Valore non valido, riprova.");
-				continua = false;
-				break;
-			}
-		} while (!continua);
+				System.out.println("Prenotazioni attuali: " + conferenza.getnPostiPrenotati());
+				System.out.println("Ci sono ancora " + conferenza.postiDisponibili() + " posti disponibili.");
+				System.out.println("Cosa vuoi fare?");
+				System.out.println("1 - Prenota; 2 - Disdici; 3 - Chiudi;");
+				input = scan.nextLine();
+				
+				switch (input) {
+				case "1": 
+					try 
+					{
+						System.out.println("Quanti posti vuole prenotare?");
+						int numPrenota = Integer.parseInt(scan.nextLine());
+						conferenza.prenota(numPrenota);
+						continua = false;
+						break;
+					} 
+					catch (NumberFormatException nfe)
+					{
+						System.out.println("Valore non valido. Devi inserire un numero.");
+						continua = false;
+					}
+					catch (Exception e)
+					{
+						System.out.println("ERRORE: Qualcosa è andato storto..");
+						System.out.println(e.getMessage());
+						continua = false;
+					}
+					
+				case "2": 
+					try 
+					{
+						System.out.println("Quanti posti vuole disdire?");
+						int numDisdici = Integer.parseInt(scan.nextLine());
+						conferenza.disdici(numDisdici);
+						continua = false;
+						break;
+					} 
+					catch (NumberFormatException nfe)
+					{
+						System.out.println("Valore non valido. Devi inserire un numero.");
+						continua = false;
+					}
+					catch (Exception e)
+					{
+						System.out.println("ERRORE: Qualcosa è andato storto..");
+						System.out.println(e.getMessage());
+						continua = false;
+					}
+
+				case "3":
+					continua = true;
+					break;
+					
+				default:
+					System.out.println("Valore non valido, riprova.");
+					continua = false;
+					break;
+				}
+			} while (!continua);
+		}
+		
+		System.out.println("Ecco la conferenza creata:");
+		if (isEvento)
+			System.out.println(evento);
+		if (isConferenza)
+			System.out.println(conferenza);
+
 		
 		scan.close();
 	}
